@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import morgan from 'morgan'
 import {connectDB} from './db'
-
+import userRoutes from './src/routes/userRoutes'
 //DOTENV
 dotenv.config()
 
@@ -13,6 +13,7 @@ connectDB()
 
 //REST OBJECT
 const app = express()
+
 
 //middleware
 app.use(cors())
@@ -23,7 +24,7 @@ app.use(morgan('dev'))
 const PORT = process.env.PORT
 
 //ROUTES
-app.use('/api/v1/auth')
+app.use("/user", userRoutes)
 //listen
 
 app.listen(PORT,()=>{
