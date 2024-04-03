@@ -5,6 +5,7 @@ import colors from 'colors'
 import morgan from 'morgan'
 import {connectDB} from './db'
 import userRoutes from './src/routes/userRoutes'
+import categoriesRoutes from './src/routes/categoriesRoutes'
 //DOTENV
 dotenv.config()
 
@@ -25,6 +26,7 @@ const PORT = process.env.PORT
 
 //ROUTES
 app.use("/user", userRoutes)
+app.use("/category", categoriesRoutes)
 //listen
 
 app.listen(PORT,()=>{

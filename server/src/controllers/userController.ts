@@ -1,4 +1,4 @@
-import {Request, Response, response} from 'express'
+import {Request, Response } from 'express'
 import User from '../models/userModel'
 import bcrypt from 'bcrypt'
 import { Types } from 'mongoose'
