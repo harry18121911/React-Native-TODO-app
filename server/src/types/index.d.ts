@@ -18,6 +18,7 @@ export interface IIcon{
 
 export interface ICategory{
   name: string,
+  _id:string,
   user: IUser | string,
   isEditable: boolean,
   color:IColor,

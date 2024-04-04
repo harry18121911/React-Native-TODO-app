@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import Category from '../models/categoryModel'
-import { ICategory } from '../types/indexType'
-import { CustomRequest } from '../middleware/indexMiddleware'
+import { ICategory } from '../types/index'
+import { CustomRequest } from '../middleware/index'
 
 export const getAllCategories= async(req:CustomRequest,res:Response) =>{
   try {
@@ -47,3 +47,27 @@ export const deleteCategory = async (req:CustomRequest,res:Response) =>{
     throw error
   }
 }
+
+export const updateCategory = async (req:CustomRequest,res:Response)=>{
+ try {
+  const {_id,color,icon,isEditable,name}: ICategory =req.body
+  await Category.updateOne({
+      _id,
+    },
+    {
+        $set:{
+          name,
+          color,
+          icon,
+          isEditable,
+        },
+      }
+    )
+    res.send({message:"Category update successfully"})
+  } catch (error) {
+  console.log("Error in updateCategory", error)
+  res.send({ error: "Error in updating category"})
+  throw error
+  }
+}
+
