@@ -34,3 +34,24 @@ export const createTask = async (req:CustomRequest,res:Response) =>{
     throw error
   }
 }
+
+export const toggleTaskStatus = async (req:CustomRequest,res:Response) =>{
+  try {
+    const { isCompleted } = req.body
+    const {id} = req.params
+
+    const task = await Task.updateOne(
+      {
+        _id:id,
+      },
+      {
+        isCompleted
+      }
+    )
+    res.send(task)
+  } catch (error) {
+    console.log("Error in toggleTaskStatus", error)
+    res.send({error:"Error is toggleTaskStatus"})
+    throw error
+  }
+}
