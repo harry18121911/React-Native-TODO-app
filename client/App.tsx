@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import {  StyleSheet , View } from 'react-native';
 import Button from './src/components/Button';
-
+import { ThemeProvider } from '@shopify/restyle';
+import theme, {Text} from './src/components/utils/theme';
 export default function App() {
   return (
+    <ThemeProvider theme={theme}>
     <View style={styles.container}>
-      <Button/>
+      <Text variant="text3Xl">Text should be big</Text>
+        <Button/>
       <StatusBar style="auto" />
     </View>
+  </ThemeProvider>
   );
 }
 
