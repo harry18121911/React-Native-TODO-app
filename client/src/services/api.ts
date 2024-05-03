@@ -36,7 +36,7 @@ export const loginUser = async ({
       password,
     })
     const _token = response.data.token 
-    response.data.user
+    saveToken(REACTNATIVEKEY, _token)
     axiosInstance.defaults.headers.common["Authorization"]=_token
     return  response.data.user
   } catch (error) {

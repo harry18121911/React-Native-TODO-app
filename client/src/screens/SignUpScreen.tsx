@@ -1,114 +1,140 @@
-import { useNavigation } from '@react-navigation/native'
-import { AuthScreenNavigationType } from '../navigation/types'
-import axios from 'axios'
-import { useState } from 'react'
-import { View,  Text, Alert, StyleSheet } from 'react-native'
-import InputBox from '../components/Form/InputBox'
-import SubmitButton from '../components/Form/SubmitButton'
+import Button from "../components/shared/Button"
+import Input from "../components/shared/CustomInput"
+import SafeAreaWrapper from "../components/shared/SafeAreaWrapper"
+import { AuthScreenNavigationType } from "../navigation/types"
+import { registerUser } from "../services/api"
+import { Box, Text } from "../components/utils/theme"
+import { useNavigation } from "@react-navigation/native"
+import React from "react"
+import { Controller, useForm } from "react-hook-form"
+import { Pressable } from "react-native"
+import axios from "axios"
+
 const SignUpScreen = () => {
   const navigation = useNavigation<AuthScreenNavigationType<"SignUp">>()
   const navigateToSignInScreen = () => {
     navigation.navigate("SignIn")
   }
 
-  //const [name, setName] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
-  //const [loading, setLoading] = useState(false); 
-  
-  const name = "dummy55"
-  const email= "dummy55@dummy"
-  const password = "1234"
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUser>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
 
-  const registerAPI= async () => {
+  const onSubmit = async (data: IUser) => {
     try {
-    
-      await axios.post(`http://192.168.100.16:8080/user/create`,
+      const { email, name, password } = data
+      const registeredUser = 
+      await registerUser({
+        email,
+        name,
+        password,
+      })
+      navigateToSignInScreen()
+      return registeredUser
+    } catch (error) {}
+  }
+
+    // direct register just in case
+  {/*const onSubmit= async (data:IUser) => {
+    const { name, email, password} = data
+    try {
+      const registerUser = await axios.post(`http://192.168.100.16:8080/user/create`,
         { name, email, password });
       console.log("Register Data==>", { name, email, password })
+      return registerUser
     } catch (error) {
       alert("Error in register api front")
       console.log(error)
     }
-  };
+  };*/}
 
-  return (
-    
-<View style={styles.container}>
-      <Text style={styles.pageTitle}>Register</Text>
-     {/* <View style={{ marginHorizontal: 20 }}>
-        <InputBox
-          inputTitle={'Name'}
-          value={name}
-          setValue={setName}
-          keyboardType={"name-phone-pad"}
-          autoComplete={"name"}
-          secureTextEntry={false}
+
+return (
+    <SafeAreaWrapper>
+      <Box flex={1} px="5" mt={"10"}>
+        <Text variant="textXl" fontWeight="700">
+          Welcome to Blossom!
+        </Text>
+        <Text variant="textXl" fontWeight="700" mb="6">
+          Your journey starts here
+        </Text>
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Name"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Name"
+              error={errors.name}
+            />
+          )}
+          name="name"
         />
-        <InputBox
-          value={email}
-          setValue={setEmail}
-          inputTitle={'Email'}
-          keyboardType={'email-address'}
-          autoComplete={"email"}
-          secureTextEntry={false}
+        <Box mb="6" />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Email"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Email"
+              error={errors.email}
+            />
+          )}
+          name="email"
         />
-        <InputBox
-          value={password}
-          setValue={setPassword}
-          inputTitle={'Password'}
-          keyboardType={'name-phone-pad'}
-          autoComplete={"current-password"}
-          secureTextEntry={true}
+        <Box mb="6" />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Password"
+              error={errors.name}
+              secureTextEntry
+            />
+          )}
+          name="password"
         />
-      </View>
-       <Text>{JSON.stringify({name, email, password},null, 4)}</Text> */}
-      <SubmitButton
-        btnTitle="Register"
-        loading={false}
-        handleSubmit={registerAPI}
-      />
-     
-    </View>
+        <Box mt="5" />
+        <Pressable onPress={navigateToSignInScreen}>
+          <Text color="primary" textAlign="right">
+            Log in?
+          </Text>
+        </Pressable>
+        <Box mb="5" />
+
+        <Button label="Register" onPress={handleSubmit(onSubmit)} uppercase onLongPress={()=>console.log("Dummy")}/>
+      </Box>
+    </SafeAreaWrapper>
   )
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#CC99FF"
-  },
-  pageTitle: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#1e2225',
-    marginBottom: 20,
-  },
-  inputBox: {
-    height: 40,
-    marginBottom: 20,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    marginTop: 10,
-    paddingLeft: 10,
-    color: "#af9f85",
-  },
-  linkText: {
-    textAlign: "center",
-  },
-  link: {
-    color: "red",
-  }
-})
-
 export default SignUpScreen
-
-
-
-
 
 
 

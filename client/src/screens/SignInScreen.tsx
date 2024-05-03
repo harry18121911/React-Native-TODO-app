@@ -30,11 +30,16 @@ const SignInScreen = () => {
   const onSubmit = async (data: Omit<IUser, "name">) => {
     try {
       const { email, password } = data
-      await loginUser({
+      const _user = await loginUser({
         email: email.toLowerCase(),
         password: password.toLowerCase(),
       })
-      console.log("En teoria el usuario" )
+      updateUser({
+        email: _user.email,
+        password: _user.password
+      })
+      return _user 
+
     } catch (error) {
       console.log("Error in SignIn on summit")
     }
