@@ -3,6 +3,7 @@ import User from '../models/userModel'
 import bcrypt from 'bcrypt'
 import { Types } from 'mongoose'
 import jwt from 'jsonwebtoken'
+import { IUser } from '../types'
 const getUserToken = (_id:string|Types.ObjectId)=>{
   const authenticatedUserToken = jwt.sign({_id}, "express", {
     expiresIn: "7d",

@@ -1,31 +1,36 @@
-import {   TextInput, TextInputProps } from 'react-native'
-import theme, { Box, Text } from '../utils/theme'
+import theme, { Box, Text } from "../utils/theme"
+import { FieldError } from "react-hook-form"
+import {  TextInput, TextInputProps } from "react-native"
 
-type CustomInputProps = {
-  label: string,
-  error?: undefined
+type InputProps = {
+  label: string
+  error?: FieldError | undefined
 } & TextInputProps
 
-const CustomInput = ({label}:CustomInputProps) => {
+const Input = ({ label, error, ...props }: InputProps) => {
   return (
-   <Box flexDirection='column' mb='6'>
-    <Text variant='textXs' textTransform='uppercase' mb='4'>
+    <Box flexDirection="column">
+      <Text variant="textXs" textTransform="uppercase" mb="5">
         {label}
       </Text>
       <TextInput
         style={{
-          padding:16,
-          borderWidth:1,
-          borderColor: theme.colors.grey,
-          borderRadius: theme.borderRadii["rounded-7xl"]
+          padding: 16,
+          borderWidth: 1,
+          borderColor: error ? theme.colors.rose500 : theme.colors.grey,
+          borderRadius: theme.borderRadii["rounded-7xl"],
         }}
-        placeholder={"Email"}
+        {...props}
       />
-    
-
+      {error && (
+        <Text mt="5" color="rose500">
+          {label} is required
+        </Text>
+      )}
     </Box>
   )
 }
 
-export default CustomInput
+export default Input
+
 
