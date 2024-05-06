@@ -4,7 +4,7 @@ export interface IUser{
   password: string
 }
 
-export interface IColor{
+ export interface IColor{
   name: string,
   id: string,
   code: string

@@ -4,7 +4,7 @@ import { Box, Text } from '../components/utils/theme'
 import { fetcher } from '../services/config'
 
 const HomeScreen = () => {
-  const {data} = useSWR("categories", fetcher)
+  const {data} = useSWR("category", fetcher)
   console.log(`data`, JSON.stringify(data))
   return (
     <SafeAreaWrapper>
