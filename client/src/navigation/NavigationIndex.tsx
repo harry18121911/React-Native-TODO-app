@@ -5,7 +5,7 @@ import AuthStackNavigator from './AuthStackNavigator'
 const Navigation = () => {
   const { user} = useUserGlobalStore()
 
-  console.log(`user`, JSON.stringify(user))
+  console.log(`user`, JSON.stringify(user, null, 2))
 
  
   return (
