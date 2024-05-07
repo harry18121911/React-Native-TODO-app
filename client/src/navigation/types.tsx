@@ -1,5 +1,6 @@
-import { CompositeNavigationProp, NavigatorScreenParams } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
+import { CompositeNavigationProp, CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack"
 
 export type AuthStackParamList = {
   Welcome : undefined,
@@ -51,4 +52,12 @@ CompositeNavigationProp<
 NativeStackNavigationProp<AuthStackParamList, RouteName>,
 NativeStackNavigationProp<AppStackParamList, "Root">
 >
+
+export type RootTabScreenProps<Screen extends keyof RootBottomTabParamList>=
+CompositeScreenProps<
+BottomTabScreenProps<RootBottomTabParamList, Screen>,
+NativeStackScreenProps<RootBottomTabParamList>
+>
+
+export type CategoriesNavigationType = NativeStackNavigationProp<CategoriesStackParamList>
 

@@ -6,6 +6,7 @@ import Loader from '../components/shared/Loader'
 import { FlatList } from 'react-native'
 import { ICategory } from '../types'
 import Category from '../components/categories/Category'
+import CreateNewList from '../components/categories/CreateNewList'
 
 const CategoriesScreen = () => {
   const { data, isLoading, error } = useSWR("category", fetcher)
@@ -29,6 +30,7 @@ const CategoriesScreen = () => {
         ItemSeparatorComponent={()=><Box height={14}/>}
         keyExtractor={(item) =>item._id}
         />
+        <CreateNewList/>
       </Box>
     </SafeAreaWrapper>
   )
