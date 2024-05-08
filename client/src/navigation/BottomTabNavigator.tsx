@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RootBottomTabParamList } from "./types";
 import CompletedScreen from '../screens/CompletedScreen';
 import TodayScreen from "../screens/TodayScreen";
-import CategoriesScreen from "../screens/CategoriesScreen";
 import HomeStackNavigator from "./HomeStackNavigator";
 import Icons from "../components/shared/Icons";
 import { useTheme } from "@shopify/restyle";
+import CategoriesStackNavigator from "./CategoriesStackNavigator";
 const Tab = createBottomTabNavigator<RootBottomTabParamList>()
 
 const BottomTabNavigator = () => {
@@ -32,7 +32,7 @@ const BottomTabNavigator = () => {
                 tabBarIcon: ({color}) => <Icons name="calendar" color={color}/>,
                 headerShown:false,
             })}></Tab.Screen>
-            <Tab.Screen name="CategoriesStack" component={CategoriesScreen} options={()=>({
+            <Tab.Screen name="CategoriesStack" component={CategoriesStackNavigator} options={()=>({
                 title:"Categories",
                 tabBarIcon: ({color}) => <Icons name="categories" color={color}/>,
                 headerShown:false,
