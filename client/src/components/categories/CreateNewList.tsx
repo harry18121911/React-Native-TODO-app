@@ -2,12 +2,8 @@ import { useNavigation } from '@react-navigation/native'
 import { Box, Text, Theme } from '../utils/theme'
 import { CategoriesNavigationType } from '../../navigation/types'
 import { Pressable } from 'react-native'
-<<<<<<< HEAD
-
-=======
 import { useTheme } from '@shopify/restyle'
 import { Feather } from "@expo/vector-icons"
->>>>>>> tmp
 const CreateNewList = () => {
 
 
@@ -19,12 +15,6 @@ const CreateNewList = () => {
 
   return (
     <Pressable onPress={navigateToCreateCategory}>
-<<<<<<< HEAD
-    <Box >
-      <Text>Create new list</Text>
-    </Box>
-    </Pressable> 
-=======
       <Box
         p='4'
         bg='lightGray'
@@ -35,7 +25,6 @@ const CreateNewList = () => {
         <Text variant='textXl' fontWeight="600" color='grey'>Create new list</Text>
       </Box>
     </Pressable>
->>>>>>> tmp
   )
 }
 

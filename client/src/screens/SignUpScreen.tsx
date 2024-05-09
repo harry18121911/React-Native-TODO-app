@@ -5,10 +5,9 @@ import { AuthScreenNavigationType } from "../navigation/types"
 import { registerUser } from "../services/api"
 import { Box, Text } from "../components/utils/theme"
 import { useNavigation } from "@react-navigation/native"
-import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { Pressable } from "react-native"
-import axios from "axios"
+import { IUser } from "../types"
 
 const SignUpScreen = () => {
   const navigation = useNavigation<AuthScreenNavigationType<"SignUp">>()

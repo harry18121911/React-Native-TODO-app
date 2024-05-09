@@ -1,5 +1,5 @@
 import { Pressable } from 'react-native'
-import { Box, Text, Theme } from '../utils/theme'
+import { Box,  Theme } from '../utils/theme'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@shopify/restyle'

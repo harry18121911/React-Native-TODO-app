@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native"
 import { Controller, useForm } from "react-hook-form"
 import { Pressable } from "react-native"
 import useUserGlobalStore from "../store/userGlobalStore"
+import { IUser } from "../types"
 const SignInScreen = () => {
   const navigation = useNavigation<AuthScreenNavigationType<"SignIn">>()
   const navigateToSignUpScreen = () => {

@@ -1,21 +1,10 @@
-<<<<<<< HEAD
-import SafeAreaWrapper from '../components/shared/SafeAreaWrapper'
-import { Box, Text } from '../components/utils/theme'
-
-const CategoryScreen = () => {
-
-  return (
-    <SafeAreaWrapper>
-      <Box>
-        <Text>Categories Screen</Text>
-=======
 import { Pressable, TextInput } from 'react-native'
 import NavigateBack from '../components/categories/NavigateBack'
 import SafeAreaWrapper from '../components/shared/SafeAreaWrapper'
 import { Box, Text, Theme } from '../components/utils/theme'
-import { backgroundColor, useTheme } from '@shopify/restyle'
+import { ColorProps, ResponsiveValue, backgroundColor, useTheme } from '@shopify/restyle'
 import { useState } from 'react'
-import { ICategory } from '../types'
+import { ICategory, IColor } from '../types'
 import { getColors, getIcons } from '../components/utils/helpers/helpers'
 import Button from '../components/shared/Button'
 
@@ -44,6 +33,14 @@ const CreateCategoryScreen = () => {
     }
   }
 
+  const updateColor= (color:IColor)=>{
+    setNewCategory(prev=>{
+      return{ 
+        ...prev,
+        color,
+      }
+    })
+  }
 
   return (
     <SafeAreaWrapper>
@@ -74,14 +71,14 @@ const CreateCategoryScreen = () => {
           />
         </Box>
         <Box bg='gray200' p='4' borderRadius='rounded-2xl'>
-          <Box bg='white' width={64} p='2' borderRadius='rounded-2xl' alignItems='center'>
-            <Text>Colors</Text>
+          <Box bg='white' width={64} p='2' borderRadius='rounded-2xl' alignItems='center' mb='4'>
+            <Text variant='textXs'  fontWeight="600" color={newCategory.color.name as unknown as undefined}>Colors</Text>
           </Box>
-          <Box>
+          <Box flexDirection='row' justifyContent='space-evenly'>
           {
             COLORS.map(_color=>{
             return(
-              <Pressable key={_color.id}>
+              <Pressable key={_color.id} onPress={()=>{updateColor(_color)}}>
                 <Box style={{
                   backgroundColor:_color.code
                 }}
@@ -93,24 +90,19 @@ const CreateCategoryScreen = () => {
             )
           })}
         </Box>
+        
+      </Box>
         <Box
           style={{
-            marginTop: "100%",
-
-          }}
+            marginTop:"100%"
+          }}  
         >
 
           <Button label='Create New Category' onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
         </Box>
       </Box>
->>>>>>> tmp
-      </Box>
     </SafeAreaWrapper>
   )
 }
 
-<<<<<<< HEAD
-export default CategoryScreen
-=======
 export default CreateCategoryScreen
->>>>>>> tmp
