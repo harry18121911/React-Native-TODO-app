@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.1",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
@@ -19,6 +20,11 @@
     "expo-linear-gradient": "~13.0.2",
     "expo-secure-store": "~13.0.1",
     "expo-status-bar": "~1.12.1",
+<<<<<<< HEAD
+=======
+    "nanoid": "^5.0.7",
+    "prop-types": "^15.8.1",
+>>>>>>> tmp
     "react": "18.2.0",
     "react-hook-form": "^7.51.3",
     "react-native": "0.74.1",

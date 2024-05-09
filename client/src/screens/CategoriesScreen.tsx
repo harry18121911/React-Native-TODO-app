@@ -32,6 +32,7 @@ const CategoriesScreen = () => {
         />
         <CreateNewList/>
       </Box>
+
     </SafeAreaWrapper>
   )
 }
