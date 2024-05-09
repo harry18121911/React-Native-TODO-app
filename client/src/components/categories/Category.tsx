@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Text } from '../utils/theme'
 import { ICategory } from '../../types'
 
