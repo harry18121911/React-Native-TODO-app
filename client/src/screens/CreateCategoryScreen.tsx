@@ -4,9 +4,12 @@ import SafeAreaWrapper from '../components/shared/SafeAreaWrapper'
 import { Box, Text, Theme } from '../components/utils/theme'
 import { ColorProps, ResponsiveValue, backgroundColor, useTheme } from '@shopify/restyle'
 import { useState } from 'react'
-import { ICategory, IColor, IIcon } from '../types'
+import { ICategory, ICategoryRequest, IColor, IIcon } from '../types'
 import { getColors, getIcons } from '../components/utils/helpers/helpers'
 import Button from '../components/shared/Button'
+import useSWRMutation from 'swr/mutation'
+import axiosInstance, { BASE_URL } from '../services/config'
+import { useSWRConfig } from 'swr'
 
 const COLORS = getColors()
 const ICONS = getIcons()
@@ -14,8 +17,30 @@ const ICONS = getIcons()
 const DEFAULT_COLOR = COLORS[0]
 const DEFAULT_ICONS = ICONS[0]
 
+
+const createCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =>{
+  try {
+    console.log("Before axiosInstance")
+    await axiosInstance.post(url,{
+      ...arg
+    })
+    console.log("After axiosInstance")
+  } catch (error) {
+    console.log("Error in createCategoryRequest", error)
+    throw (error)
+  }
+}
+
+
+
+
 const CreateCategoryScreen = () => {
   const theme = useTheme<Theme>()
+
+  const { trigger, isMutating} = useSWRMutation("category/create", createCategoryRequest)
+
+  const { mutate } = useSWRConfig()
+
   const [newCategory, setNewCategory] = useState<Omit<ICategory, "_id" | "user" | "isEditable">>({
     name: "",
     color: DEFAULT_COLOR,
@@ -27,6 +52,10 @@ const CreateCategoryScreen = () => {
   const createNewCategory = async () => {
     try {
       console.log(`New Category` , JSON.stringify(newCategory, null, 2 ))
+      await trigger({
+        ...newCategory
+      })
+      await mutate(BASE_URL+"category")
     } catch (error) {
       console.log("Error in createNewCategory", error)
       throw (error)

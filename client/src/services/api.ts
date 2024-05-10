@@ -1,3 +1,4 @@
+import { IUser } from "../types";
 import axiosInstance, { REACTNATIVEKEY, saveToken }  from "./config";
 
 type RegisterUserTypes = IUser

@@ -29,3 +29,10 @@ export interface ICategory{
   color:IColor,
   icon: IIcon
 }
+
+
+export interface ICategoryRequest{
+  name: string,
+  color:IColor,
+  icon: IIcon
+}
