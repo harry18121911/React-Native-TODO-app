@@ -9,7 +9,7 @@ import Category from '../components/categories/Category'
 import CreateNewList from '../components/categories/CreateNewList'
 
 const CategoriesScreen = () => {
-  const { data, isLoading, error } = useSWR("category", fetcher)
+  const { data, isLoading, error } = useSWR<ICategory[]>("category", fetcher,{refreshInterval:2000,})
   if(isLoading){
     return <Loader/>
   }

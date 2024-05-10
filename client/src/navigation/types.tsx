@@ -1,6 +1,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { CompositeNavigationProp, CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { ICategory } from "../types"
 
 export type AuthStackParamList = {
   Welcome : undefined,
@@ -27,7 +28,7 @@ export type CategoriesStackParamList = {
     id: string
   }
   CreateCategory:{
-    id?:string
+    category?: ICategory
   }
 }
 

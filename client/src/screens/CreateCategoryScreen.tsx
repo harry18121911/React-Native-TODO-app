@@ -2,7 +2,7 @@ import { Pressable, TextInput } from 'react-native'
 import NavigateBack from '../components/categories/NavigateBack'
 import SafeAreaWrapper from '../components/shared/SafeAreaWrapper'
 import { Box, Text, Theme } from '../components/utils/theme'
-import { ColorProps, ResponsiveValue, backgroundColor, useTheme } from '@shopify/restyle'
+import { useTheme } from '@shopify/restyle'
 import { useState } from 'react'
 import { ICategory, ICategoryRequest, IColor, IIcon } from '../types'
 import { getColors, getIcons } from '../components/utils/helpers/helpers'
@@ -10,6 +10,8 @@ import Button from '../components/shared/Button'
 import useSWRMutation from 'swr/mutation'
 import axiosInstance, { BASE_URL } from '../services/config'
 import { useSWRConfig } from 'swr'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { CategoriesStackParamList } from '../navigation/types'
 
 const COLORS = getColors()
 const ICONS = getIcons()
@@ -31,11 +33,15 @@ const createCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =
   }
 }
 
-
+type CreateCategoryRouteTypes = RouteProp<CategoriesStackParamList, "CreateCategory">
 
 
 const CreateCategoryScreen = () => {
   const theme = useTheme<Theme>()
+  const navigation = useNavigation()
+
+  const route = useRoute<CreateCategoryRouteTypes>()
+
 
   const { trigger, isMutating} = useSWRMutation("category/create", createCategoryRequest)
 
@@ -56,6 +62,7 @@ const CreateCategoryScreen = () => {
         ...newCategory
       })
       await mutate(BASE_URL+"category")
+      navigation.goBack()
     } catch (error) {
       console.log("Error in createNewCategory", error)
       throw (error)
