@@ -4,7 +4,7 @@ import SafeAreaWrapper from '../components/shared/SafeAreaWrapper'
 import { Box, Text, Theme } from '../components/utils/theme'
 import { ColorProps, ResponsiveValue, backgroundColor, useTheme } from '@shopify/restyle'
 import { useState } from 'react'
-import { ICategory, IColor } from '../types'
+import { ICategory, IColor, IIcon } from '../types'
 import { getColors, getIcons } from '../components/utils/helpers/helpers'
 import Button from '../components/shared/Button'
 
@@ -26,18 +26,27 @@ const CreateCategoryScreen = () => {
 
   const createNewCategory = async () => {
     try {
-
+      console.log(`New Category` , JSON.stringify(newCategory, null, 2 ))
     } catch (error) {
       console.log("Error in createNewCategory", error)
       throw (error)
     }
   }
 
-  const updateColor= (color:IColor)=>{
-    setNewCategory(prev=>{
-      return{ 
+  const updateColor = (color: IColor) => {
+    setNewCategory(prev => {
+      return {
         ...prev,
         color,
+      }
+    })
+  }
+
+  const updateIcon = (icon: IIcon) => {
+    setNewCategory(prev => {
+      return {
+        ...prev,
+        icon,
       }
     })
   }
@@ -72,30 +81,51 @@ const CreateCategoryScreen = () => {
         </Box>
         <Box bg='gray200' p='4' borderRadius='rounded-2xl'>
           <Box bg='white' width={64} p='2' borderRadius='rounded-2xl' alignItems='center' mb='4'>
-            <Text variant='textXs'  fontWeight="600" color={newCategory.color.name as unknown as undefined}>Colors</Text>
+            <Text variant='textXs' fontWeight="600" color={newCategory.color.name as unknown as undefined}>Colors</Text>
           </Box>
           <Box flexDirection='row' justifyContent='space-evenly'>
-          {
-            COLORS.map(_color=>{
-            return(
-              <Pressable key={_color.id} onPress={()=>{updateColor(_color)}}>
-                <Box style={{
-                  backgroundColor:_color.code
-                }}
-                width={24}
-                height={24}
-                borderRadius='rounded-2xl'
-                ></Box>
-              </Pressable>
-            )
-          })}
+            {
+              COLORS.map(_color => {
+                return (
+                  <Pressable key={_color.id} onPress={() => { updateColor(_color) }}>
+                    <Box style={{
+                      backgroundColor: _color.code
+                    }}
+                      width={24}
+                      height={24}
+                      borderRadius='rounded-2xl'
+                    ></Box>
+                  </Pressable>
+                )
+              })}
+          </Box>
         </Box>
-        
-      </Box>
+        <Box height={24}/>
+        <Box bg='gray200' p='4' borderRadius='rounded-2xl'>
+          <Box bg='white' width={64} p='2' borderRadius='rounded-2xl' alignItems='center' mb='4'>
+            <Text variant='textXs' fontWeight="600" color={newCategory.color.name as unknown as undefined}> {newCategory.icon.symbol}</Text>
+            
+          </Box>
+          <Box flexDirection='row' justifyContent='space-evenly'>
+            {ICONS.map(icon=> {
+                return (
+                  <Pressable key={icon.id} onPress={() => {updateIcon(icon) }}>
+                    <Box  width={24} height={24} borderRadius='rounded-2xl'
+                    >
+                    <Text>{icon.symbol}</Text>
+
+                  </Box>
+                  </Pressable>
+                )
+              })}
+          </Box>
+        </Box>
+
+
         <Box
           style={{
-            marginTop:"100%"
-          }}  
+            marginTop: "50%"
+          }}
         >
 
           <Button label='Create New Category' onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
