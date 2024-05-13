@@ -33,6 +33,19 @@ const createCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =
   }
 }
 
+const updateCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =>{
+  try {
+    console.log("Before axiosInstance")
+    await axiosInstance.put(url,{
+      ...arg
+    })
+    console.log("After axiosInstance")
+  } catch (error) {
+    console.log("Error in updateCategoryRequest", error)
+    throw (error)
+  }
+}
+
 type CreateCategoryRouteTypes = RouteProp<CategoriesStackParamList, "CreateCategory">
 
 
@@ -42,25 +55,37 @@ const CreateCategoryScreen = () => {
 
   const route = useRoute<CreateCategoryRouteTypes>()
 
+  const isEditing = route.params.category ? true : false
 
   const { trigger, isMutating} = useSWRMutation("category/create", createCategoryRequest)
+
+  const { trigger:updateTrigger } = useSWRMutation("category/update", updateCategoryRequest)
 
   const { mutate } = useSWRConfig()
 
   const [newCategory, setNewCategory] = useState<Omit<ICategory, "_id" | "user" | "isEditable">>({
-    name: "",
-    color: DEFAULT_COLOR,
-    icon: DEFAULT_ICONS,
+    name: route.params.category?.name ?? "",
+    color: route.params.category?.color ?? DEFAULT_COLOR,
+    icon: route.params.category?.icon ?? DEFAULT_ICONS,
   })
 
   console.log(`New category`, JSON.stringify(newCategory, null, 2))
 
   const createNewCategory = async () => {
     try {
+      if(isEditing){
+        const updateCategoryItem ={
+          ...route.params.category,
+          ...newCategory
+        }
+        await updateTrigger({
+          ...updateCategoryItem
+        })
+      }else{
       console.log(`New Category` , JSON.stringify(newCategory, null, 2 ))
       await trigger({
         ...newCategory
-      })
+      })}
       await mutate(BASE_URL+"category")
       navigation.goBack()
     } catch (error) {
@@ -102,6 +127,7 @@ const CreateCategoryScreen = () => {
               lineHeight: 26,
               padding: 16,
             }}
+            value={newCategory.name}
             maxLength={36}
             placeholder='Create new list'
             placeholderTextColor={theme.colors.gray5}
@@ -164,7 +190,7 @@ const CreateCategoryScreen = () => {
           }}
         >
 
-          <Button label='Create New Category' onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
+          <Button label={isEditing ?  "Edit category" : 'Create New Category'} onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
         </Box>
       </Box>
     </SafeAreaWrapper>
