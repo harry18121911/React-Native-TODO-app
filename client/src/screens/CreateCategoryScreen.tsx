@@ -12,6 +12,7 @@ import axiosInstance, { BASE_URL } from '../services/config'
 import { useSWRConfig } from 'swr'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { CategoriesStackParamList } from '../navigation/types'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const COLORS = getColors()
 const ICONS = getIcons()
@@ -20,10 +21,10 @@ const DEFAULT_COLOR = COLORS[0]
 const DEFAULT_ICONS = ICONS[0]
 
 
-const createCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =>{
+const createCategoryRequest = async (url: string, { arg }: { arg: ICategoryRequest }) => {
   try {
     console.log("Before axiosInstance")
-    await axiosInstance.post(url,{
+    await axiosInstance.post(url, {
       ...arg
     })
     console.log("After axiosInstance")
@@ -33,15 +34,26 @@ const createCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =
   }
 }
 
-const updateCategoryRequest = async (url:string, {arg}:{arg:ICategoryRequest}) =>{
+const updateCategoryRequest = async (url: string, { arg }: { arg: ICategoryRequest }) => {
   try {
     console.log("Before axiosInstance")
-    await axiosInstance.put(url,{
+    await axiosInstance.put(url, {
       ...arg
     })
     console.log("After axiosInstance")
   } catch (error) {
     console.log("Error in updateCategoryRequest", error)
+    throw (error)
+  }
+}
+
+const deleteCategoryRequest = async (url: string, { arg }: { arg: { id: string } }) => {
+  try {
+    console.log("Before axiosInstance")
+    await axiosInstance.delete(url + "/" + arg.id)
+    console.log("After axiosInstance")
+  } catch (error) {
+    console.log("Error in deleteCategoryRequest", error)
     throw (error)
   }
 }
@@ -57,9 +69,11 @@ const CreateCategoryScreen = () => {
 
   const isEditing = route.params.category ? true : false
 
-  const { trigger, isMutating} = useSWRMutation("category/create", createCategoryRequest)
+  const { trigger, isMutating } = useSWRMutation("category/create", createCategoryRequest)
 
-  const { trigger:updateTrigger } = useSWRMutation("category/update", updateCategoryRequest)
+  const { trigger: updateTrigger } = useSWRMutation("category/update", updateCategoryRequest)
+
+  const { trigger: deleteTrigger } = useSWRMutation("category/delete", deleteCategoryRequest)
 
   const { mutate } = useSWRConfig()
 
@@ -73,20 +87,21 @@ const CreateCategoryScreen = () => {
 
   const createNewCategory = async () => {
     try {
-      if(isEditing){
-        const updateCategoryItem ={
+      if (isEditing) {
+        const updateCategoryItem = {
           ...route.params.category,
           ...newCategory
         }
         await updateTrigger({
           ...updateCategoryItem
         })
-      }else{
-      console.log(`New Category` , JSON.stringify(newCategory, null, 2 ))
-      await trigger({
-        ...newCategory
-      })}
-      await mutate(BASE_URL+"category")
+      } else {
+        console.log(`New Category`, JSON.stringify(newCategory, null, 2))
+        await trigger({
+          ...newCategory
+        })
+      }
+      await mutate(BASE_URL + "category")
       navigation.goBack()
     } catch (error) {
       console.log("Error in createNewCategory", error)
@@ -112,12 +127,32 @@ const CreateCategoryScreen = () => {
     })
   }
 
+  const deleteCategory = async () => {
+    try {
+      if (isEditing && route.params.category?._id)
+       await deleteTrigger({
+          id: route.params.category?._id
+        })
+      await mutate(BASE_URL + "category")
+      navigation.goBack()
+      
+    } catch (error) {
+      console.log("Error in deleteCategory", error)
+      throw (error)
+    }
+  }
+
   return (
     <SafeAreaWrapper>
       <Box flex={1} mx='4'>
         <Box height={16} />
         <Box flexDirection='row' justifyContent='space-between' alignItems='center'>
           <NavigateBack />
+          {isEditing && (
+            <Pressable onPress={deleteCategory}>
+              <MaterialCommunityIcons name='delete' size={24} color={theme.colors.red400} />
+            </Pressable>
+          )}
         </Box>
         <Box height={16} />
         <Box bg='gray200' borderRadius='rounded-2xl' mb='4'>
@@ -162,24 +197,24 @@ const CreateCategoryScreen = () => {
               })}
           </Box>
         </Box>
-        <Box height={24}/>
+        <Box height={24} />
         <Box bg='gray200' p='4' borderRadius='rounded-2xl'>
           <Box bg='white' width={64} p='2' borderRadius='rounded-2xl' alignItems='center' mb='4'>
             <Text variant='textXs' fontWeight="600" color={newCategory.color.name as unknown as undefined}> {newCategory.icon.symbol}</Text>
-            
+
           </Box>
           <Box flexDirection='row' justifyContent='space-evenly'>
-            {ICONS.map(icon=> {
-                return (
-                  <Pressable key={icon.id} onPress={() => {updateIcon(icon) }}>
-                    <Box  width={24} height={24} borderRadius='rounded-2xl'
-                    >
+            {ICONS.map(icon => {
+              return (
+                <Pressable key={icon.id} onPress={() => { updateIcon(icon) }}>
+                  <Box width={24} height={24} borderRadius='rounded-2xl'
+                  >
                     <Text>{icon.symbol}</Text>
 
                   </Box>
-                  </Pressable>
-                )
-              })}
+                </Pressable>
+              )
+            })}
           </Box>
         </Box>
 
@@ -190,7 +225,7 @@ const CreateCategoryScreen = () => {
           }}
         >
 
-          <Button label={isEditing ?  "Edit category" : 'Create New Category'} onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
+          <Button label={isEditing ? "Edit category" : 'Create New Category'} onPress={createNewCategory} onLongPress={() => console.log("Dummy")} />
         </Box>
       </Box>
     </SafeAreaWrapper>
