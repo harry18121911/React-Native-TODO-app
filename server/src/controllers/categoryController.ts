@@ -16,6 +16,20 @@ export const getAllCategories= async(req:CustomRequest,res:Response) =>{
   }
 }
 
+export const getCategoryById = async(req:CustomRequest, res:Response) =>{
+  try {
+  const { id } = req.params
+  const category = await Category.find({
+      _id: id
+    })
+    res.send(category)
+  } catch (error) {
+    console.log("Error in getCategoryById",error)
+    throw error
+  }
+}
+
+
 export const createCategory= async(req:CustomRequest,res:Response) =>{
   try {
     const {color,icon, isEditable, name}:ICategory= req.body

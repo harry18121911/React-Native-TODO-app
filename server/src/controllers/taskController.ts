@@ -20,10 +20,10 @@ export const getAllTask = async (req: CustomRequest, res: Response) => {
 export const getAllTaskByCategory = async (req: CustomRequest, res: Response) => {
   try {
     const userId = req.user
-    const { categoryId } = req.params
+    const { id } = req.params
     const tasks = await Task.find({
       user: userId,
-      categoryId: categoryId,
+      categoryId: id,
     })
     res.send(tasks)
   } catch (error) {

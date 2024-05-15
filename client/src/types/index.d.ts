@@ -27,7 +27,8 @@ export interface ICategory{
   user: IUser | string,
   isEditable: boolean,
   color:IColor,
-  icon: IIcon
+  icon: IIcon,
+  map?:Map
 }
 
 
