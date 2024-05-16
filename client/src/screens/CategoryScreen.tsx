@@ -7,6 +7,7 @@ import { fetcher } from '../services/config'
 import Loader from '../components/shared/Loader'
 import { ICategory } from '../types'
 import NavigateBack from '../components/categories/NavigateBack'
+import TaskActions from '../components/task/TaskActions'
 
 type CategoryScreenRouteProp = RouteProp<CategoriesStackParamList, "Category">
 
@@ -33,11 +34,22 @@ const CategoryScreen = () => {
     <SafeAreaWrapper>
       <Box width={40}>
         <NavigateBack />
+
+      <Box height={16}/>
       </Box>
        {
-category.map((category2: ICategory) => <Text variant='textXl' fontWeight="700" key={category2._id} >{category2.name}</Text>)
+category.map((category2: ICategory) => 
+
+          <Box key={category2._id} flexDirection='row' >
+            <Text variant='textXl' fontWeight="700" ml='3'>{category2.icon.symbol}</Text>
+            <Text variant='textXl' fontWeight="700" ml='3' style={{
+              color:category2.color.code
+            }} >{category2.name}</Text>
+          </Box>
+        )
       }
       <Box>
+      <TaskActions categoryId={id}/>
       </Box>
     </SafeAreaWrapper>
   )
